@@ -8,8 +8,8 @@
 
 ![Python](https://img.shields.io/badge/Python-3.x-blue?logo=python)
 ![Status](https://img.shields.io/badge/Status-Em%20Desenvolvimento-yellow)
-![Licença](https://img.shields.io/badge/Licença-MIT-green)
 ![Versão](https://img.shields.io/badge/Versão-0.1-orange)
+![License](https://img.shields.io/badge/License-MIT-green)
 
 ---
 
@@ -21,12 +21,14 @@
 
   * [Implementadas](#-implementadas)
   * [Planejadas](#-planejadas)
+* [Roadmap de Versões](#-roadmap-de-versões)
 * [Estrutura do Projeto](#️-estrutura-do-projeto)
 
   * [Estrutura de Dados](#-estrutura-de-dados)
   * [Funções Principais](#-funções-principais)
 * [Como Executar](#-como-executar)
 * [Como Usar](#-como-usar)
+* [Pré-requisitos](#-pré-requisitos)
 * [Limitações Atuais](#️-limitações-atuais)
 * [Contribuição](#-contribuição)
 * [Licença](#-licença)
@@ -36,20 +38,24 @@
 
 ## 📖 Descrição
 
-O **Mini Framework de Autenticação** é um módulo Python criado para ser integrado em outros sistemas que necessitem de **validação de usuários**. Ele foi desenvolvido com foco em **simplicidade, reuso e boas práticas**, seguindo as recomendações da **PEP 8** e **PEP 257**.
+O **Mini Framework de Autenticação** é um pacote Python modular que permite integrar **autenticação de usuários** em outros sistemas com facilidade.
 
-Atualmente, ele funciona no console, mas possui roadmap para suportar persistência em arquivos e até interface gráfica.
+O pacote prioriza:
 
-🚧 **Aviso:** este repositório está em desenvolvimento. A estrutura e documentação serão refinadas em commits futuros.
+* **Modularidade** — cada funcionalidade em arquivos separados (`autenticar.py`, `exceptions.py`, `utils.py`).
+* **Boas práticas** — PEP 8, PEP 257 e docstrings detalhadas.
+* **Reuso e escalabilidade** — fácil integração em projetos pequenos ou grandes.
+
+🚧 **Aviso:** O projeto está em desenvolvimento; novas versões trarão funcionalidades adicionais.
 
 ---
 
 ## 🎯 Objetivos
 
-* Criar uma base modular para sistemas que precisem de autenticação.
-* Garantir separação entre **lógica de autenticação** e **lógica de negócio**.
-* Permitir expansão para diferentes cenários (sistemas financeiros, jogos, cadastros etc.).
-* Servir como projeto de aprendizado para boas práticas em Python.
+* Criar uma base sólida para autenticação modular em Python.
+* Separar **lógica de autenticação** da **lógica do sistema principal**.
+* Permitir futuras integrações com banco de dados, interface gráfica e segurança avançada.
+* Servir como projeto educacional e de referência para boas práticas em Python.
 
 ---
 
@@ -57,18 +63,31 @@ Atualmente, ele funciona no console, mas possui roadmap para suportar persistên
 
 ### ✅ Implementadas
 
-* 🔐 **Login de Usuário** — valida se o usuário existe antes de solicitar senha.
-* 🔄 **Limite de tentativas** — máximo configurável (padrão: 3).
-* 📝 **Docstrings padronizadas** — documentação seguindo **PEP 257**.
-* 🧩 **Integração modular** — pode ser chamado de qualquer outro script Python.
+* Login de usuário com verificação prévia da existência.
+* Limite de tentativas configurável (padrão: 3).
+* Exceções customizadas (`UsuarioNaoEncontrado`, `TentativasExcedidas`).
+* Funções auxiliares em `utils.py`.
+* Docstrings e documentação seguindo PEP 257.
 
 ### 🔜 Planejadas
 
-* 💾 **Persistência de dados** — suporte a arquivos JSON.
-* 🔒 **Segurança avançada** — hashing de senhas.
-* 👥 **Gestão de perfis** — diferentes níveis de acesso (admin, usuário).
-* 🖼️ **Interface gráfica** — integração futura com Tkinter.
-* 🧪 **Testes automatizados** — uso de `pytest`.
+* Persistência de dados em arquivos JSON.
+* Criptografia de senhas e validação de força.
+* Gestão de perfis e níveis de acesso (admin, usuário).
+* Interface gráfica com Tkinter ou similar.
+* Testes automatizados com `pytest`.
+* Pacote instalável via PyPI.
+
+---
+
+## 🗺️ Roadmap de Versões
+
+| Versão | Status             | Novidades                                                         |
+| ------ | ------------------ | ----------------------------------------------------------------- |
+| 0.1    | Em desenvolvimento | Estrutura inicial, login básico, docstrings, utils e exceptions   |
+| 0.2    | Planejado          | Adição de persistência JSON, testes unitários, hashing de senhas  |
+| 0.3    | Planejado          | Gestão de perfis, interface gráfica simples, logging de eventos   |
+| 1.0    | Futuro             | Primeira versão estável, pronta para integração em sistemas reais |
 
 ---
 
@@ -77,69 +96,76 @@ Atualmente, ele funciona no console, mas possui roadmap para suportar persistên
 ```
 mini_auth/
 │
-├── login.py         # Módulo principal de autenticação
-├── main.py          # Exemplo de uso (script executável)
-└── README.md        # Documentação
+├── login/
+│   ├── __init__.py        # Pacote do módulo
+│   ├── autenticar.py      # Funções principais de login
+│   ├── exceptions.py      # Exceções customizadas
+│   └── utils.py           # Funções auxiliares
+│
+├── examples/
+│   └── main.py            # Exemplo executável
+├── tests/
+│   └── test_autenticar.py # Testes unitários com pytest
+├── setup.py               # Configuração para instalação do pacote
+├── requirements.txt       # Dependências do projeto
+└── README.md              # Documentação
 ```
 
 ### Estrutura de Dados
 
-Usuários são armazenados em **dicionário Python**:
-
 ```python
 usuarios = {
     "gabriel": {"senha": "1234"},
-    "admin": {"senha": "admin"}
+    "teste": {"senha": "abcd"}
 }
 ```
 
 ### Funções Principais
 
-* **`solicitar_usuario(banco_usuarios)`** → valida se o usuário existe.
-* **`solicitar_senha(usuario, banco_usuarios, max_tentativas=3)`** → gerencia tentativas de senha.
-* **`autenticar(banco_usuarios)`** → executa o fluxo completo de login.
+* `solicitar_usuario(banco_usuarios)` → valida usuário.
+* `solicitar_senha(usuario, banco_usuarios, max_tentativas=3)` → gerencia tentativas de senha.
+* `autenticar(banco_usuarios)` → fluxo completo de login.
+* `inicializar_sistema(banco_usuarios, funcao_principal)` → executa função principal após login.
+* `utils.mensagem_boas_vindas(usuario)` → exibe mensagem de boas-vindas.
+* Exceções customizadas em `exceptions.py`.
 
 ---
 
 ## 🚀 Como Executar
 
-### Pré-requisitos
-
-* Python **3.8+** instalado.
-* Nenhuma dependência externa necessária.
-
-### Passos
-
 ```bash
-# 1. Clone o repositório
+# Clone o repositório
 git clone https://github.com/gabrielhastec/mini-framework-auth.git
-
-# 2. Entre no diretório
 cd mini-framework-auth
 
-# 3. Execute o exemplo
-python main.py
+# Execute exemplo
+python examples/main.py
 ```
 
 ---
 
 ## 📌 Como Usar
 
-Exemplo básico:
-
 ```python
-import login
+from login import inicializar_sistema
 
 def sistema_principal():
-    print("Acesso liberado ao sistema principal!")
+    print("Acesso liberado!")
 
 usuarios = {
     "gabriel": {"senha": "1234"},
     "teste": {"senha": "abcd"}
 }
 
-login.inicializar_sistema(usuarios, sistema_principal)
+inicializar_sistema(usuarios, sistema_principal)
 ```
+
+---
+
+## 📋 Pré-requisitos
+
+* Python 3.8+
+* Dependências futuras listadas no `requirements.txt`
 
 ---
 
@@ -148,36 +174,28 @@ login.inicializar_sistema(usuarios, sistema_principal)
 * Usuários em memória (sem banco de dados).
 * Senhas não criptografadas.
 * Apenas interface via console.
-* Sem testes automatizados ainda.
+* Testes limitados.
 
 ---
 
 ## 🤝 Contribuição
 
-1. Faça um fork do projeto.
-2. Crie uma branch para sua feature:
+1. Faça um **fork**.
+2. Crie uma branch:
 
-   ```bash
-   git checkout -b feature/nova-funcionalidade
-   ```
-3. Faça commits pequenos e descritivos:
+```bash
+git checkout -b feature/nova-funcionalidade
+```
 
-   ```bash
-   git commit -m "Adiciona verificação de senha forte"
-   ```
-4. Envie sua branch:
-
-   ```bash
-   git push origin feature/nova-funcionalidade
-   ```
-5. Abra um Pull Request.
+3. Faça commits pequenos e descritivos.
+4. Envie sua branch e abra um Pull Request.
 
 ---
 
 ## 📜 Licença
 
-Distribuído sob a licença **MIT**.
-Arquivo `LICENSE` será adicionado futuramente.
+Projeto educacional. Licença MIT planejada.
+Código pode ser estudado e adaptado, mas não usar em produção sem autorização.
 
 ---
 
