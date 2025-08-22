@@ -104,8 +104,10 @@ mini_auth/
 │
 ├── examples/
 │   └── main.py            # Exemplo executável
+|
 ├── tests/
 │   └── test_autenticar.py # Testes unitários com pytest
+|
 ├── setup.py               # Configuração para instalação do pacote
 ├── requirements.txt       # Dependências do projeto
 └── README.md              # Documentação
