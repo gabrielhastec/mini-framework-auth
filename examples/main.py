@@ -1,15 +1,20 @@
 """
 Exemplo de execução do pacote mini_auth.
 """
-from login import inicializar_sistema
+from login import autenticar
 
-def sistema_principal():
-    print("Acesso liberado ao sistema!")
+# Funções simulando verificação em sistema externo
+def verificar_usuario_externo(usuario):
+    usuarios = ["gabriel", "admin", "teste"]
+    return usuario in usuarios
 
-usuarios_teste = {
-    "gabriel": {"senha": "1234"},
-    "teste": {"senha": "abcd"}
-}
+def verificar_senha_externa(usuario, senha):
+    banco_senhas = {"gabriel": "1234", "admin": "admin", "teste": "abcd"}
+    return banco_senhas.get(usuario) == senha
 
-if __name__ == "__main__":
-    inicializar_sistema(usuarios_teste, sistema_principal)
+# Função que representa o sistema principal
+def sistema_principal(usuario):
+    print(f"Acesso liberado ao sistema para {usuario}!")
+
+# Inicializa autenticação
+autenticar.inicializar_sistema(verificar_usuario_externo, verificar_senha_externa, sistema_principal)
