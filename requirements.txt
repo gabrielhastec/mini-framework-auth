@@ -1,0 +1,3 @@
+# Lista de dependências do projeto
+# Exemplo:
+# pytest>=7.0
